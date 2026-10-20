@@ -64,6 +64,9 @@ def analyze_formatting(parsed_data: Dict[str, Any]) -> Tuple[int, List[str], Lis
     elif words < 200:
         score -= 15
         weaknesses.append("Resume is too brief (under 200 words), lacking depth")
+    elif words < 300:
+        score -= 5
+        weaknesses.append("Resume is a little short (200 - 300 words); add more detail on impact and projects")
     else:
         score -= 10
         weaknesses.append("Resume is overly verbose (over 1000 words), consider condensing")

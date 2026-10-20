@@ -130,4 +130,9 @@ resume-analyser/
   ```bash
   npm run build
   ```
+- To run the backend unit tests for the ATS scoring engine:
+  ```bash
+  pip install pytest
+  python -m pytest backend/tests
+  ```
 - The backend contains mock API configurations inside `src/services/api.ts` that will gracefully execute local sandbox demos if the FastAPI server is offline.
