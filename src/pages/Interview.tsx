@@ -49,7 +49,9 @@ export const Interview: React.FC<InterviewProps> = ({ globalReport }) => {
           if (weaknesses.length === 0) weaknesses.push("Ensure you practice quantified system scaling metrics in response verbalizations.");
 
           const mockQuestions = [
-            `You listed ${globalReport.keywords.detected.slice(0, 3).join(', ')}. What are the design trade-offs of using these in a large application?`,
+            globalReport.keywords.detected.length > 0
+              ? `You listed ${globalReport.keywords.detected.slice(0, 3).join(', ')}. What are the design trade-offs of using these in a large application?`
+              : "Walk me through the main tools and technologies you have used, and why you chose them for your projects.",
             "Describe a challenging bug you encountered in one of your projects and the steps you took to debug it.",
             "Tell me about a time when you had to prioritize multiple conflicting features under tight deadlines.",
             "How do you ensure code maintainability and team alignment when working in agile sprints?"

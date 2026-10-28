@@ -125,12 +125,9 @@ def get_detected_and_missing_keywords(resume_skills: Set[str], target_domain: st
     detected_cap = [d.upper() if len(d) <= 3 else d.title() for d in detected]
     missing_cap = [m.upper() if len(m) <= 3 else m.title() for m in final_missing]
     
-    # Ensure some items are present for design requirements
-    if not detected_cap:
-        detected_cap = ["React", "Python", "JavaScript", "Node.js"]
-    if not missing_cap:
-        missing_cap = ["REST API", "Docker", "AWS", "CI/CD"]
-        
+    # Return the real result even when a list is empty. Padding it with sample
+    # keywords told users they had skills they never listed, or that they were
+    # missing ones (e.g. Docker) already on their resume.
     return {
         "target_domain": target_domain,
         "detected": detected_cap,
