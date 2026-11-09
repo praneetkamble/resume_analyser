@@ -97,6 +97,19 @@ def extract_contact_info(text: str) -> Dict[str, Any]:
         "links": list(set(links))
     }
 
+_HEADING_CONNECTORS = {'and', 'of', 'the', 'for', 'in', 'on', 'to', 'with'}
+
+
+def _looks_like_heading(line: str) -> bool:
+    """True if a line is styled like a section heading rather than body text."""
+    if line[0] in '•-*–·' or line.rstrip().endswith('.'):
+        return False
+    words = re.findall(r'[A-Za-z]+', line)
+    if not words or len(words) > 5:
+        return False
+    return all(w[0].isupper() for w in words if w.lower() not in _HEADING_CONNECTORS)
+
+
 def segment_resume(text: str) -> Dict[str, str]:
     """
     Segments the resume into standard sections by finding headers.
@@ -119,8 +132,12 @@ def segment_resume(text: str) -> Dict[str, str]:
             # Remove punctuation and numbers to match markers
             stripped_line = re.sub(r'[^a-z\s]', '', lower_line).strip()
             
+            # Prefix/suffix matches ("Technical Skills & Tools") only count for
+            # heading-styled lines, so a short bullet such as
+            # "Improved team communication skills" isn't mistaken for a header.
+            loose_ok = len(stripped_line) > 3 and _looks_like_heading(cleaned_line)
             for section, markers in SECTION_MARKERS.items():
-                if stripped_line in markers or any(m == stripped_line for m in markers) or (len(stripped_line) > 3 and any(stripped_line.startswith(m) or stripped_line.endswith(m) for m in markers)):
+                if stripped_line in markers or (loose_ok and any(stripped_line.startswith(m) or stripped_line.endswith(m) for m in markers)):
                     current_section = section
                     is_header = True
                     break

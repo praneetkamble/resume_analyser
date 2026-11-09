@@ -130,7 +130,7 @@ resume-analyser/
   ```bash
   npm run build
   ```
-- To run the backend unit tests for the ATS scoring engine:
+- To run the backend unit tests (resume parser, ATS scoring and keyword engines):
   ```bash
   pip install pytest
   python -m pytest backend/tests
